@@ -17,9 +17,11 @@
     "web-vitals": "^4.2.4"
   },
   "main": "electron-main.js",
-  "homepage": "./",
+  "homepage": "http://ChiragIITB.github.io/visualizer",
   "scripts": {
     "start": "react-scripts start",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
