@@ -13,6 +13,7 @@
     "react-dom": "^18.3.1",
     "react-scripts": "5.0.1",
     "three": "^0.171.0",
+    "uuid": "^11.0.5",
     "wait-on": "^8.0.1",
     "web-vitals": "^4.2.4"
   },

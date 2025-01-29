@@ -4,11 +4,35 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  height: 90vh;
+  height: 96vh;
   width: auto;
 
   margin: 0;
   padding: 1rem;
-  background-color: gray  ;
+  background-color: rgba(0, 0, 0, 0.785);
+
+  color: white;
 }
 
+.CanvasContainer{
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+
+  height: 80%;
+  width: 100%;
+}
+
+
+.CanvasContainer .displayStr{
+  height: 80%;
+  width: 20%;
+  margin: 2rem;
+}
+
+.CanvasComp{
+  height: 80%;
+  width: 80%;
+
+  margin: 2rem;
+}
