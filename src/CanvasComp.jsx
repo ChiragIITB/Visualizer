@@ -1,188 +1,110 @@
 import {Canvas, useThree, useFrame}  from '@react-three/fiber';
 import { useState, useRef, useEffect } from 'react';
 import { DirectionalLight } from 'three';
-import { OrbitControls, Grid } from '@react-three/drei';
+import { OrbitControls, Grid, Html } from '@react-three/drei';
 
 import {v4 as uuidv4} from 'uuid'
 
 // Css imports
 import './CanvasComp.css'
 
-
 // Component Imports
 import Cubic from './lattices/Cubic'
 import Monoclinic from './lattices/Monoclinic'
+import Triclinic from './lattices/Triclinic'
+import Tetragonal from './lattices/Tetragonal'
+import Hexagonal from './lattices/Hexagonal'
+import Orthorhombic from './lattices/Orthorhombic'
+import Rhombohedral from './lattices/Rhombohedral'
 
-
-function Ground() {
-    const gridConfig = {
-      cellSize: 1,
-      cellThickness: 0.5,
-      cellColor: 'black',
-      sectionSize: 3,
-      sectionThickness: 1.5,
-      sectionColor: 'gray',
-      fadeDistance: 30,
-      fadeStrength: 1,
-      followCamera: false,
-      infiniteGrid: true
-    }
-    return <Grid position={[0, -0.01, 0]} args={[10.5, 10.5]} {...gridConfig} />
-  }
-
+// importing the utilities
+import Motif from './Utilities/Motif';
+import Ground from './Utilities/Ground';
 
 // ------------------------------
-// Rendering the Canvas Component
 
 
-function Motif({vertex}){
-    
-    console.log('Rendering')
+// Rendering Canvas
 
-
-    // Defining Atoms States
-    const defAtomState = {
-        isActive : false, 
-        args : [0.1, 24, 24],
-        color : 0x000000, 
-        opacity : 0.5, 
-        transparent : true,
-        position : vertex
-    }
-
-    const hoverState = {
-        color : 0x00ff00, 
-        opacity : 1
-    }
-
-    const holdState = {
-        color : 0xffff00, 
-        opacity : 1
-    }
-
-    // Defining useState Variables
-
-    const [timer, setTimer] = useState(null)
-    const [atomState, setAtomState] = useState(defAtomState)
-
-    // Defining Atom References
-    const atomRef = useRef(null)
-
-
-    // Defining the Handle Functions
-
-    const handlePointerOver = () => {
-        console.log('Pointer Over')
-        document.body.style.cursor = "pointer"
-
-        // Re-render will color only if color has not changed
-        // this is to prevent issues with the onPointerOut event
-        if(atomState.color !== hoverState.color){
-            setAtomState({
-                ...atomState, 
-                color : hoverState.color
-            })
-        }
-    }
-
-    const handlePointerOut = () => {
-        console.log('Pointer Out')
-        document.body.style.cursor = "default"
-
-        // 
-        if(!atomState.isActive){
-            setAtomState({
-                ...atomState, 
-                color : defAtomState.color, 
-                opacity : defAtomState.opacity
-            })
-        }
-    }
-
-    const handlePointerDown = () => {
-
-        // setting hold time to generate the atom
-        console.log('Pointer Down')
-
-        setAtomState({
-            ...atomState,
-            color : holdState.color, 
-            opacity : holdState.opacity
-        })
-
-        // Creating a atom-hold timer
-        const newTimer = setTimeout(() => {
-
-            // Generating the atom
-            // basically increasing the size of the atom
-            setAtomState({
-                ...atomState, 
-                isActive : true,
-                args : [0.7, 24, 24], 
-                opacity : 1
-            })
-            document.body.style.cursor = 'default'
-        }, 500);
-        setTimer(newTimer);
-    }
-
-    const handlePointerUp = () => {
-        console.log('Pointer Up')
-        clearTimeout(timer);
-
-        // Assuming the pointers is still hovering
-        setAtomState({
-            ...atomState, 
-            color : hoverState.color, 
-            opacity : hoverState.color
-        })
-    }
-
-
-    return(
-            <mesh className="Motif" key={uuidv4()} position = {vertex} ref = {atomRef}  
-                onPointerOver={handlePointerOver}
-                onPointerOut={handlePointerOut}
-                onPointerDown={handlePointerDown}
-                onPointerUp={handlePointerUp}
-            >
-                <sphereGeometry args={atomState.args}/>
-                <meshStandardMaterial 
-                    color = {atomState.color} 
-                    opacity = {atomState.opacity} 
-                    transparent={atomState.transparent}/>
-            </mesh>
-
-    )
-}
-
-function CanvasComp({displayStr}){
+function CanvasComp({displayStr, strType, strParameters}){
 
     const [selMesh, setSelMesh] = useState({
         meshRef : null,
         isSelected : false, 
-        cubeVertices : []
+        vertices : [], 
     })
+
+    const trial = 2
+
+    const Structure = () => {
+        switch (displayStr) {
+            case 'cubic':
+                const a = Object.values(strParameters)[0]
+                let size = [a, a, a]
+                return(
+                    <Cubic strType = {strType} position = {[0, 0, 0]} size = {size} onSelect = {(obj) => setSelMesh(obj)}></Cubic>
+                )
+
+            case 'monoclinic':
+                return(
+                    <Monoclinic  onSelect = {(obj) => setSelMesh(obj)} parametersArray={Object.values(strParameters)} />
+                )
+
+            case 'triclinic':
+                return(
+                    <Triclinic  onSelect = {(obj) => setSelMesh(obj)} parametersArray={Object.values(strParameters)} />
+                )
+
+            case 'tetragonal':
+                return(
+                    <Tetragonal  onSelect = {(obj) => setSelMesh(obj)} parametersArray={Object.values(strParameters)} />
+                )
+
+            case 'hexagonal':
+                return(
+                    <Hexagonal  onSelect = {(obj) => setSelMesh(obj)} parametersArray={Object.values(strParameters)} />
+                )
+
+            case 'orthorhombic':
+                return(
+                    <Orthorhombic  onSelect = {(obj) => setSelMesh(obj)} parametersArray={Object.values(strParameters)} />
+                )
+
+            case 'rhombohedral':
+                return(
+                    <Rhombohedral  onSelect = {(obj) => setSelMesh(obj)} parametersArray={Object.values(strParameters)} />
+                )
+        
+            default:
+                break;
+        }
+    }
 
     return(
         <Canvas className='CanvasComp'>
-            <directionalLight position = {[0,0,2]}/>
-            <ambientLight position = {[0,0,2]} intensity = {0.5}/>
+
+            {/* to display the structure */}
+            {Structure()}
 
 
-            <Cubic position = {[0, 0, 0]} size = {[2, 2, 2]} onSelect = {(obj) => setSelMesh(obj)}></Cubic>
-            {selMesh.cubeVertices.map((vertex, index) => {
+            {/* Rendering Atoms */}
+            {selMesh.vertices.map((vertex, index) => {
                 if(selMesh.isSelected){
                     return <Motif key={uuidv4()} vertex = {vertex}/>
                 }
+                if(strType === 'body-centered'){
+                    console.log('hi')
+                    return <Motif key={uuidv4()} vertex = {[0,0,0]}/>
+                }
             })}
 
-            {/* <Monoclinic/> */}
-
-            
+            {/* Utilities */}
+            <directionalLight position = {[0,0,2]}/>
+            <ambientLight position = {[0,0,2]} intensity = {0.5}/>
             <OrbitControls/>
             <Ground/>
         </Canvas>
+
     )
 }
 

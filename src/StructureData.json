@@ -1,0 +1,74 @@
+[
+    {
+        "index" : 0,
+        "id" : "cubic", 
+        "name" : "Cubic",
+        "parameters" : {
+            "a" : 3
+        },
+        "type" : ["Simple", "Body-centered", "Face-Centered"]
+    },
+    {
+        "index" : 1,
+        "id" : "monoclinic", 
+        "name" : "Monoclinic",
+        "parameters" : {
+            "a" : 2,
+            "b" : 3, 
+            "c" : 4,
+            "beta" : 60
+        }
+        
+    },
+    {
+        "index" : 2,
+        "id" : "triclinic", 
+        "name" : "Triclinic",
+        "parameters" : {
+            "a" : 2,
+            "b" : 3, 
+            "c" : 4,
+            "alpha" : 60, 
+            "beta" : 60,
+            "gamma" : 60
+        }
+        
+    },
+    {
+        "index" : 3,
+        "id" : "tetragonal", 
+        "name" : "Tetragonal",
+        "parameters" : {
+            "a, b" : 2,
+            "c" : 4
+        }
+    },
+    {
+        "index" : 4,
+        "id" : "orthorhombic", 
+        "name" : "Orthorhombic",
+        "parameters" : {
+            "a" : 2,
+            "b" : 3, 
+            "c" : 4
+        }
+    },
+    {
+        "index" : 5,
+        "id" : "rhombohedral", 
+        "name" : "Rhombohedral",
+        "parameters" : {
+            "a" : 2,
+            "beta" : 60
+        }
+    },
+    {
+        "index" : 6,
+        "id" : "hexagonal", 
+        "name" : "Hexagonal",
+        "parameters" : {
+            "a" : 2, 
+            "c" : 3
+        }
+    }
+]
