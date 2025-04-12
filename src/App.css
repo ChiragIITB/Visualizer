@@ -6,6 +6,10 @@
 
 body {
   white-space: nowrap;
+  /* background-color: black; */
+  height: 100vh;
+  padding: 0%;
+  margin: 0;
 }
 
 
@@ -13,20 +17,22 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
   text-align: center;
-  height: 96vh;
+  height: 100%;
   width: auto;
 
   margin: 0;
-  padding: 1rem;
-  background-color: rgba(0, 0, 0, 0.785);
+  /* background-color: rgba(0, 0, 0, 0.785); */
+  background-color: #222831;
 
   color: white;
 }
 
 .AppContainer h1{
-  font-size: 40px;
+  font-size: 50px;
+  margin: 1.5rem;
+  color: #EEEEEE;
 }
 
 .CanvasContainer{
@@ -36,7 +42,8 @@ body {
   align-items: center; 
 
   height: 80%;
-  width: 100%;
+  /* width: 100%; */
+  /* margin: 1rem; */
 }
 
 .SelectSection{
@@ -46,12 +53,13 @@ body {
   align-items: center;
 
   height: 95%;
-  width: 30%;
+  width: 35%;
 
+  margin: 1rem;
   padding: 1rem;
-  border-radius: 2rem;
+  border-radius: 1rem;
 
-  background-color: gray;
+  background-color: #393e46;
 }
 
 .displayStr-container, .strType-container, .par-container{
@@ -67,6 +75,7 @@ body {
 label{
   margin: 0.2rem 1rem;
   padding: 0.2rem;
+  color: #EEEEEE;
 }
 
 .displayStr, .strType{
@@ -79,6 +88,7 @@ label{
 
   border-radius: 0.5rem;
   outline: none;
+
 }
 
 
@@ -101,6 +111,10 @@ label{
   padding: 0.5rem;
   border-radius: 5px;
   border: none;
+}
+
+input, .displayStr, .strType, .resetButton{
+  background-color: #EEEEEE;
 }
 
 .resetButton{

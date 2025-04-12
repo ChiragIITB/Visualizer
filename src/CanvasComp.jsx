@@ -1,7 +1,7 @@
 import {Canvas, useThree, useFrame}  from '@react-three/fiber';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { DirectionalLight } from 'three';
-import { OrbitControls, Grid, Html } from '@react-three/drei';
+import { OrbitControls, Grid, Html, Hud } from '@react-three/drei';
 
 import {v4 as uuidv4} from 'uuid'
 
@@ -20,34 +20,36 @@ import Rhombohedral from './lattices/Rhombohedral'
 // importing the utilities
 import Motif from './Utilities/Motif';
 import Ground from './Utilities/Ground';
+import { Group } from 'three/examples/jsm/libs/tween.module.js';
 
 // ------------------------------
 
 
 // Rendering Canvas
 
-function CanvasComp({displayStr, strType, strParameters}){
+function CanvasComp({displayStr, strType, strParameters, atomSize}){
 
     const [selMesh, setSelMesh] = useState({
         meshRef : null,
         isSelected : false, 
         vertices : [], 
+        atomStates : []
     })
 
-    const trial = 2
 
     const Structure = () => {
+
         switch (displayStr) {
             case 'cubic':
                 const a = Object.values(strParameters)[0]
                 let size = [a, a, a]
                 return(
-                    <Cubic strType = {strType} position = {[0, 0, 0]} size = {size} onSelect = {(obj) => setSelMesh(obj)}></Cubic>
+                    <Cubic strType = {strType} selMesh={selMesh} position = {[0, 0, 0]} size = {size} onSelect = {(obj) => setSelMesh(obj)}></Cubic>
                 )
 
             case 'monoclinic':
                 return(
-                    <Monoclinic  onSelect = {(obj) => setSelMesh(obj)} parametersArray={Object.values(strParameters)} />
+                    <Monoclinic selMesh={selMesh} onSelect = {(obj) => setSelMesh(obj)} parametersArray={Object.values(strParameters)} />
                 )
 
             case 'triclinic':
@@ -77,11 +79,18 @@ function CanvasComp({displayStr, strType, strParameters}){
         
             default:
                 break;
+            }
         }
-    }
+        
 
     return(
         <Canvas className='CanvasComp'>
+
+                
+            <Hud>
+                <axesHelper args = {[5]}/>
+            </Hud>
+
 
             {/* to display the structure */}
             {Structure()}
@@ -90,10 +99,9 @@ function CanvasComp({displayStr, strType, strParameters}){
             {/* Rendering Atoms */}
             {selMesh.vertices.map((vertex, index) => {
                 if(selMesh.isSelected){
-                    return <Motif key={uuidv4()} vertex = {vertex}/>
+                    return <Motif key={uuidv4()} size={atomSize} index={index} selMesh={selMesh} updateSelMesh={(obj)=>setSelMesh(obj)}/>
                 }
                 if(strType === 'body-centered'){
-                    console.log('hi')
                     return <Motif key={uuidv4()} vertex = {[0,0,0]}/>
                 }
             })}

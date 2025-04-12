@@ -8,26 +8,21 @@ import { getVertices } from '../Utilities/utils'
 
 // Rendering the Monoclinic 
 
-export default function Monoclinic({onSelect, parametersArray}){
+export default function Monoclinic({selMesh, onSelect, parametersArray}){
 
+  
   console.log("rendering monoclinic")
-  // console.log(`updated parameters : ${parametersArray}`)
+  
+  // defining the reference
+  const ref = useRef()
+
+  // useState definintions
   const [isSelected, setIsSelected] = useState(false)
-  const ref = useRef(null)
 
-  parametersArray.forEach(element => {
-    console.log(typeof(element))
-  });
-
+  // useMemo to reduce repeated calculations
   const geometry = useMemo(() => {
     const geom = new THREE.BufferGeometry();
 
-    // Defining parameters
-    // const a = 2, b = 3, c = 4;
-    // const beta = Math.PI / 4; // 45 degrees
-
-    // console.log(parametersArray)
-    // Assigning paramaters
     const a = parametersArray[0]
     const b = parametersArray[1]
     const c = parametersArray[2]
@@ -61,11 +56,6 @@ export default function Monoclinic({onSelect, parametersArray}){
         4, 5, 6,  5, 7, 6
     ]);
 
-    console.log(typeof(a))
-    console.log(c)
-    console.log(Math.cos(beta))
-    console.log(c * Math.cos(beta))
-    console.log(typeof(a + (c * Math.cos(beta))))
 
     geom.setAttribute('position', new THREE.BufferAttribute(strVertices, 3));
     geom.setIndex(new THREE.BufferAttribute(indices, 1));
@@ -74,28 +64,58 @@ export default function Monoclinic({onSelect, parametersArray}){
     return geom;
   }, [parametersArray]);
 
-
+  // Handle Selection of the Mesh
   const selectMesh = () => {
-    console.log('Monclinic Selected')
+    console.log('Monoclinic Selected')
 
     const atomPositions = getVertices(ref)
 
     if(!isSelected){
-
       setIsSelected(true)
       
       onSelect({
-        meshRef : null,
-        isSelected : true, 
+        ...selMesh,
+        meshRef : ref,
+        isSelected : true,
+        vertices : atomPositions
+      })
+    }
+
+    else{
+      onSelect({
+        ...selMesh,
         vertices : atomPositions
       })
     }
   }
 
+      // WHEN NOT USING CUSTOM HOOK
+      useEffect(() => {
+        if(isSelected){
+    
+            const updatedPositions = getVertices(selMesh.meshRef)
+            
+            // checking if there are new vertices 
+            const isNewVertex = JSON.stringify(updatedPositions) === JSON.stringify(selMesh.vertices)
+            if(!isNewVertex){
+                console.log("updating vertices")
+                onSelect({
+                    ...selMesh,
+                    vertices : updatedPositions
+                })
+            }
+        }
+    }, [parametersArray])
+
+
+    // using CUSTOM HOOK
+    // useUpdateVertices(selMesh, strType, size, onSelect)
+
+
   return(
     <mesh geometry = {geometry} ref={ref}
     onClick = {selectMesh}>
-        <meshStandardMaterial color="blue" side={THREE.DoubleSide} metalness={0.3} roughness={0.8} />
+        <meshStandardMaterial color="lightgreen" side={THREE.DoubleSide} metalness={0.3} roughness={0.8} opacity={0.7} transparent/>
         {/* <VertexPoints /> */}
 
               {/* Add edges */}

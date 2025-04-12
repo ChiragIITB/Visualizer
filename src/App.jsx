@@ -23,7 +23,7 @@ function App() {
   
   // Finding the structure data
   const str = findStrData(displayStr)
-  
+  const [atomSize, setAtomSize] = useState(0.5)
   // Defining parValues (After 'str')
   const [strParameters, setStrParameters] = useState(str.parameters)
 
@@ -82,7 +82,13 @@ function App() {
 
             <div className='par-container'>
               <form action="">
-
+                <div className="par-input">
+                  <label htmlFor="atomSize">Atom Size</label>
+                  <input type="number" min={1} id='atomSize' step={0.1} value={atomSize} 
+                    onChange={(e) => {
+                      setAtomSize(e.target.value)
+                    }}/>
+                </div>
                 {
                   Object.keys(strParameters).map((parameter, index) => {
                     return (
@@ -119,6 +125,7 @@ function App() {
         <CanvasComp displayStr={displayStr}
                     strType={strType}
                     strParameters={strParameters}
+                    atomSize={atomSize}
                     >
         </CanvasComp>
 
