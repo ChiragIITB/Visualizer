@@ -1,0 +1,27 @@
+
+body{
+    margin: 0;
+    padding: 0;
+}
+
+
+.SpaceGroups-Page{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0px;
+    padding: 0px;
+
+    height: 100vh;
+    width: 100vw;
+}
+
+.SpaceGroups-Page .CanvasContainer{
+
+    border: 2px solid black;
+    border-radius: 1rem;
+    width: 80%;
+    height: 80%;
+    margin: 0;
+    padding: 0;
+}

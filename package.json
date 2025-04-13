@@ -11,6 +11,7 @@
     "gh-pages": "^6.2.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-router-dom": "^7.5.0",
     "react-scripts": "5.0.1",
     "three": "^0.171.0",
     "uuid": "^11.0.5",
@@ -18,7 +19,7 @@
     "web-vitals": "^4.2.4"
   },
   "main": "electron-main.js",
-  "homepage": "http://chiragiitb.github.io/Visualizer",
+  "homepage": "http://chiragiitb.github.io/",
   "scripts": {
     "start": "react-scripts start",
     "predeploy": "npm run build",

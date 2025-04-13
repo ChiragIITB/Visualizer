@@ -1,9 +1,7 @@
 import { useState, useRef, useEffect, useMemo } from 'react';
-import { LineLoop, MeshBasicMaterial } from 'three/src/Three.Core.js';
 import * as THREE from 'three';
 
-import { getVertices } from '../Utilities/utils'
-
+import { getVertices, fillAtomStates } from '../Utilities/utils'
 
 
 // Rendering the Monoclinic 
@@ -77,7 +75,8 @@ export default function Monoclinic({selMesh, onSelect, parametersArray}){
         ...selMesh,
         meshRef : ref,
         isSelected : true,
-        vertices : atomPositions
+        vertices : atomPositions,
+        atomStates : fillAtomStates(atomPositions)
       })
     }
 
@@ -113,16 +112,23 @@ export default function Monoclinic({selMesh, onSelect, parametersArray}){
 
 
   return(
-    <mesh geometry = {geometry} ref={ref}
-    onClick = {selectMesh}>
-        <meshStandardMaterial color="lightgreen" side={THREE.DoubleSide} metalness={0.3} roughness={0.8} opacity={0.7} transparent/>
-        {/* <VertexPoints /> */}
+    <mesh geometry={geometry} ref={ref} onClick={selectMesh}>
+      <meshStandardMaterial
+            color="lightgreen"
+            side={THREE.DoubleSide}
+            // metalness={0.3}
+            // roughness={0.8}
+            opacity={0.6}
+            transparent
+            />
+          
+        <lineSegments>
+          <edgesGeometry attach="geometry" args={[geometry]} />
+          <lineBasicMaterial attach="material" color="green"/>
+        </lineSegments>
+    </mesh>
 
-              {/* Add edges */}
-      <lineSegments>
-        <edgesGeometry attach="geometry" args={[geometry]} />
-        <lineBasicMaterial attach="material" color="black" />
-      </lineSegments>
-      </mesh>
+    // <BasicMeshComp geometry={geometry} meshRef={ref} selectMesh={selectMesh}/>
+    // TO MAKE A COMMON MESH COMPONENT
     )
 }

@@ -1,10 +1,9 @@
-import { useState, useRef, useMemo } from "react";
+import { useState, useRef, useMemo, useEffect } from "react";
 import * as THREE from "three";
-import { div } from "three/tsl";
-import { getVertices } from "../Utilities/utils";
+import { getVertices, fillAtomStates } from "../Utilities/utils";
 
 
-export default function Hexagonal({onSelect, parametersArray}){
+export default function Hexagonal({selMesh, onSelect, parametersArray}){
 
     console.log("rendering hexagonal")
     console.log(`updated parameters : ${parametersArray}`)
@@ -67,9 +66,6 @@ export default function Hexagonal({onSelect, parametersArray}){
           6, 13, 8, 6, 8, 1
       ]);
 
-    
-    
-    
       console.log('1')
       geom.setAttribute('position', new THREE.BufferAttribute(strVertices, 3));
       geom.setIndex(new THREE.BufferAttribute(indices, 1));
@@ -80,34 +76,74 @@ export default function Hexagonal({onSelect, parametersArray}){
     }, [parametersArray]);
     
     
-    const selectMesh = () => {
-      console.log('hexagonal Selected')
-    
-      const atomPositions = getVertices(ref)
-    
-      if(!isSelected){
-    
-        setIsSelected(true)
-        
+  // Handle Selection of the Mesh
+  const selectMesh = () => {
+    console.log('Monoclinic Selected')
+
+    const atomPositions = getVertices(ref)
+
+    if(!isSelected){
+      setIsSelected(true)
+      
+      onSelect({
+        ...selMesh,
+        meshRef : ref,
+        isSelected : true,
+        vertices : atomPositions,
+        atomStates : fillAtomStates(atomPositions)
+      })
+    }
+
+    else{
+      onSelect({
+        ...selMesh,
+        vertices : atomPositions
+      })
+    }
+
+    console.log(atomPositions)
+  }
+
+  // WHEN NOT USING CUSTOM HOOK
+  useEffect(() => {
+    if(isSelected){
+      
+      const updatedPositions = getVertices(selMesh.meshRef)
+      
+      // checking if there are new vertices 
+      const isNewVertex = JSON.stringify(updatedPositions) === JSON.stringify(selMesh.vertices)
+      if(!isNewVertex){
+        console.log("updating vertices")
         onSelect({
-          meshRef : null,
-          isSelected : true, 
-          vertices : atomPositions
+          ...selMesh,
+          vertices : updatedPositions
         })
       }
     }
+  }, [parametersArray])
+  
+  // using CUSTOM HOOK
+  // useUpdateVertices(selMesh, strType, size, onSelect)
+
     
-    return(
-      <mesh geometry = {geometry} ref={ref}
-      onClick = {selectMesh}>
-          <meshStandardMaterial color="blue" side={THREE.DoubleSide} metalness={0.3} roughness={0.8} />
-          {/* <VertexPoints /> */}
-    
-                {/* Add edges */}
+  return(
+    <mesh geometry={geometry} ref={ref} onClick={selectMesh}>
+      <meshStandardMaterial
+            color="lightgreen"
+            side={THREE.DoubleSide}
+            // metalness={0.3}
+            // roughness={0.8}
+            opacity={0.6}
+            transparent
+            />
+          
         <lineSegments>
           <edgesGeometry attach="geometry" args={[geometry]} />
-          <lineBasicMaterial attach="material" color="black" />
+          <lineBasicMaterial attach="material" color="green"/>
         </lineSegments>
-        </mesh>
-      )
+    </mesh>
+
+    // TO MAKE A COMMON MESH COMPONENT
+    // <BasicMeshComp geometry={geometry} meshRef={ref} selectMesh={selectMesh}/>
+  )
 }

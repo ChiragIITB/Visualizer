@@ -54,12 +54,12 @@ export default function Cubic({strType, selMesh, position, size, onSelect}) {
         }
         
         // REMOVE THE else PART WHEN MOTIF CODE WORKS
-        else{
-            onSelect({
-                ...selMesh, 
-                vertices : atomPositions
-            })
-        }
+        // else{
+        //     onSelect({
+        //         ...selMesh, 
+        //         vertices : atomPositions
+        //     })
+        // }
         
     }
     

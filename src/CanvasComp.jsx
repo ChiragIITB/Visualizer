@@ -1,7 +1,6 @@
-import {Canvas, useThree, useFrame}  from '@react-three/fiber';
-import { useState, useRef, useEffect, useLayoutEffect } from 'react';
-import { DirectionalLight } from 'three';
-import { OrbitControls, Grid, Html, Hud } from '@react-three/drei';
+import { Canvas }  from '@react-three/fiber';
+import { useState } from 'react';
+import { OrbitControls, Hud } from '@react-three/drei';
 
 import {v4 as uuidv4} from 'uuid'
 
@@ -36,6 +35,7 @@ function CanvasComp({displayStr, strType, strParameters, atomSize}){
         atomStates : []
     })
 
+    console.log(selMesh.atomStates)
 
     const Structure = () => {
 
@@ -54,27 +54,27 @@ function CanvasComp({displayStr, strType, strParameters, atomSize}){
 
             case 'triclinic':
                 return(
-                    <Triclinic  onSelect = {(obj) => setSelMesh(obj)} parametersArray={Object.values(strParameters)} />
+                    <Triclinic selMesh={selMesh} onSelect = {(obj) => setSelMesh(obj)} parametersArray={Object.values(strParameters)} />
                 )
 
             case 'tetragonal':
                 return(
-                    <Tetragonal  onSelect = {(obj) => setSelMesh(obj)} parametersArray={Object.values(strParameters)} />
+                    <Tetragonal  selMesh={selMesh} onSelect = {(obj) => setSelMesh(obj)} parametersArray={Object.values(strParameters)} />
                 )
 
             case 'hexagonal':
                 return(
-                    <Hexagonal  onSelect = {(obj) => setSelMesh(obj)} parametersArray={Object.values(strParameters)} />
+                    <Hexagonal  selMesh={selMesh} onSelect = {(obj) => setSelMesh(obj)} parametersArray={Object.values(strParameters)} />
                 )
 
             case 'orthorhombic':
                 return(
-                    <Orthorhombic  onSelect = {(obj) => setSelMesh(obj)} parametersArray={Object.values(strParameters)} />
+                    <Orthorhombic  selMesh={selMesh} onSelect = {(obj) => setSelMesh(obj)} parametersArray={Object.values(strParameters)} />
                 )
 
             case 'rhombohedral':
                 return(
-                    <Rhombohedral  onSelect = {(obj) => setSelMesh(obj)} parametersArray={Object.values(strParameters)} />
+                    <Rhombohedral  selMesh={selMesh} onSelect = {(obj) => setSelMesh(obj)} parametersArray={Object.values(strParameters)} />
                 )
         
             default:
@@ -84,12 +84,10 @@ function CanvasComp({displayStr, strType, strParameters, atomSize}){
         
 
     return(
-        <Canvas className='CanvasComp'>
+        <Canvas className='CanvasComp'
+            camera={{ position: [6, 6, 6], fov: 60 }}>
 
                 
-            <Hud>
-                <axesHelper args = {[5]}/>
-            </Hud>
 
 
             {/* to display the structure */}
@@ -107,6 +105,9 @@ function CanvasComp({displayStr, strType, strParameters, atomSize}){
             })}
 
             {/* Utilities */}
+            <Hud>
+                <axesHelper args = {[5]}/>
+            </Hud>
             <directionalLight position = {[0,0,2]}/>
             <ambientLight position = {[0,0,2]} intensity = {0.5}/>
             <OrbitControls/>
