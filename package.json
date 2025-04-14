@@ -19,7 +19,7 @@
     "web-vitals": "^4.2.4"
   },
   "main": "electron-main.js",
-  "homepage": "http://chiragiitb.github.io/Visualizer/home",
+  "homepage": "http://chiragiitb.github.io/Visualizer",
   "scripts": {
     "start": "react-scripts start",
     "predeploy": "npm run build",

@@ -6,7 +6,7 @@ import SpaceGroups from './pages/SpaceGroups';
 export default function App() {
   return (
       <Routes>
-        <Route path="/home" element={<BravaisLattices/>} />
+        <Route path="/" element={<BravaisLattices/>} />
         <Route path="/space-groups" element={<SpaceGroups/>} />
       </Routes>
   );
