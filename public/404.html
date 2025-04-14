@@ -3,9 +3,12 @@
   <head>
     <meta charset="utf-8">
     <script>
-      var redirectTo = '/Visualizer' + location.pathname.replace('/Visualizer', '') + location.search + location.hash;
+      // Redirect to index.html while preserving path
+      const redirectTo = '/Visualizer/index.html' + location.search + location.hash;
       location.replace(redirectTo);
     </script>
   </head>
-  <body></body>
+  <body>
+    <p>Redirecting...</p>
+  </body>
 </html>
