@@ -1,10 +1,16 @@
 import { useState } from 'react';
-import './BravaisLattices.css';
-import CanvasComp from './../CanvasComp.jsx';
 
-// importing the json file 
+// CSS imports
+import './BravaisLattices.css';
+
+// JSON imports
 import strData from '../StructureData.json'
 
+// Component Imports
+import CanvasComp from './../CanvasComp.jsx';
+
+
+// Utility Function
 function findStrData(displayStr){
   const str = strData.find((s) => s.id == displayStr)
   console.log(`strJsonData : ${str.name}`)
@@ -12,6 +18,8 @@ function findStrData(displayStr){
   return str
 }
 
+
+// Main function
 function BravaisLattices() {
   
   console.log("APP render")
@@ -87,7 +95,7 @@ function BravaisLattices() {
               <form action="">
                 <div className="par-input">
                   <label htmlFor="atomSize">Atom Size</label>
-                  <input type="number" min={1} id='atomSize' step={0.1} value={atomSize} 
+                  <input type="number" min={0.5} id='atomSize' step={0.1} value={atomSize} 
                     onChange={(e) => {
                       setAtomSize(e.target.value)
                     }}/>
@@ -97,7 +105,7 @@ function BravaisLattices() {
                     return (
                     <div className='par-input' key={index}>
                       <label htmlFor={`par-${parameter}`}>{parameter}</label>
-                      <input type="number" min={1} id={`par-${parameter}`} value={strParameters[parameter]}
+                      <input type="number" min={1} step={0.5} id={`par-${parameter}`} value={strParameters[parameter]}
                         onChange={(e) => {
                           setStrParameters(strParameters => {
 
@@ -117,7 +125,7 @@ function BravaisLattices() {
           }
 
             <button className='resetButton' 
-              onClick={handleReset}>Reset</button>
+              onClick={handleReset}>Reset Parameters</button>
 
         </div>
         <CanvasComp displayStr={displayStr}
